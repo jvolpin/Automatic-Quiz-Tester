@@ -1,5 +1,8 @@
 package piterpackage;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyListener;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -156,6 +159,11 @@ public class PiterFrame extends javax.swing.JFrame {
         });
 
         copyUrlButton.setText("Copy URL");
+        copyUrlButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyUrlButtonActionPerformed(evt);
+            }
+        });
 
         slugTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -509,6 +517,13 @@ public class PiterFrame extends javax.swing.JFrame {
 
         
     }//GEN-LAST:event_createButtonMouseClicked
+
+    private void copyUrlButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyUrlButtonActionPerformed
+    StringSelection selection;
+        selection = new StringSelection(urlTextField.getText());
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    clipboard.setContents(selection, selection);
+    }//GEN-LAST:event_copyUrlButtonActionPerformed
 
     /**
      * @param args the command line arguments
