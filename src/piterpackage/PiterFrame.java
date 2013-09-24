@@ -1,19 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package piterpackage;
 
+import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 /**
  *
  * @author jvolpintesta
  */
 public class PiterFrame extends javax.swing.JFrame {
+    private KeyListener Keylistener;
 
     /**
      * Creates new form PiterFrame
      */
     public PiterFrame() {
         initComponents();
+        groupButton();
     }
 
     /**
@@ -28,13 +34,9 @@ public class PiterFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         createButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        slugTextField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        countryDropDown = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        takeQuizCheck = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
         jCheckBox4 = new javax.swing.JCheckBox();
@@ -42,11 +44,15 @@ public class PiterFrame extends javax.swing.JFrame {
         jCheckBox6 = new javax.swing.JCheckBox();
         jCheckBox7 = new javax.swing.JCheckBox();
         jCheckBox8 = new javax.swing.JCheckBox();
+        urlTextField = new javax.swing.JTextField();
+        copyUrlButton = new javax.swing.JButton();
+        slugTextField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        countryDropDown = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        envDropDown = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
-        checkButton = new javax.swing.JButton();
+        oldFormatRadio = new javax.swing.JRadioButton();
+        newFormatRadio = new javax.swing.JRadioButton();
 
         jButton2.setText("jButton2");
 
@@ -60,27 +66,20 @@ public class PiterFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         createButton.setText("Create Test");
+        createButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createButtonMouseClicked(evt);
+            }
+        });
         createButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createButtonActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Slug");
-
-        slugTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                slugTextFieldActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Country");
-
-        countryDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "United States", "United Kingdom", "Russia", "Spain", "Malaysia", "Italy", "Mexico", "Germany", " " }));
-
         jLabel3.setText("Features");
 
-        jCheckBox1.setText("Take Quiz");
+        takeQuizCheck.setText("Take Quiz");
 
         jCheckBox2.setText("Privacy Link");
 
@@ -97,7 +96,7 @@ public class PiterFrame extends javax.swing.JFrame {
 
         jCheckBox6.setText("Twitter");
 
-        jCheckBox7.setText("vKontacte");
+        jCheckBox7.setText("Cookie Message");
 
         jCheckBox8.setText("oKrussiannet");
 
@@ -108,7 +107,7 @@ public class PiterFrame extends javax.swing.JFrame {
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jCheckBox1)
+                        .add(takeQuizCheck)
                         .add(30, 30, 30)
                         .add(jCheckBox4))
                     .add(jPanel1Layout.createSequentialGroup()
@@ -126,16 +125,16 @@ public class PiterFrame extends javax.swing.JFrame {
                         .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jCheckBox7)
-                        .add(0, 0, Short.MAX_VALUE))))
+                        .add(0, 101, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jCheckBox1)
                     .add(jCheckBox4)
-                    .add(jCheckBox7))
+                    .add(jCheckBox7)
+                    .add(takeQuizCheck, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jCheckBox2)
@@ -145,100 +144,138 @@ public class PiterFrame extends javax.swing.JFrame {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jCheckBox3)
                     .add(jCheckBox6))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .add(15, 15, 15))
         );
+
+        urlTextField.setEditable(false);
+        urlTextField.setText("https://quiz.visualdna.com/");
+        urlTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                urlTextFieldActionPerformed(evt);
+            }
+        });
+
+        copyUrlButton.setText("Copy URL");
+
+        slugTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                slugTextFieldActionPerformed(evt);
+            }
+        });
+        slugTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                slugTextFieldKeyTyped(evt);
+            }
+        });
+
+        jLabel1.setText("Slug");
+
+        countryDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<Select Country>", "?c=us", "?c=uk", "?c=ru", "?c=es", "?c=my", "?c=it", "?c=mx", "?c=de", "?c=pl", " " }));
+        countryDropDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                countryDropDownActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Country");
 
         jLabel4.setText("URL");
 
-        jLabel5.setText("Environment");
+        oldFormatRadio.setText("Old format");
+        oldFormatRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oldFormatRadioActionPerformed(evt);
+            }
+        });
 
-        envDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "IntCon", "Stag", "Prod" }));
-
-        jTextField1.setEditable(false);
-        jTextField1.setText("https://quiz.");
-
-        checkButton.setText("Copy URL");
+        newFormatRadio.setSelected(true);
+        newFormatRadio.setText("New format");
+        newFormatRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newFormatRadioActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(createButton))
                     .add(layout.createSequentialGroup()
-                        .add(22, 22, 22)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(layout.createSequentialGroup()
-                                .add(jLabel3)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                    .add(jLabel5)
-                                    .add(jLabel1)
-                                    .add(jLabel2))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(newFormatRadio)
+                                    .add(oldFormatRadio))
+                                .add(18, 18, 18)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                                     .add(layout.createSequentialGroup()
-                                        .add(envDropDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(88, 88, 88)
-                                        .add(jLabel4))
+                                        .add(jLabel2)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(countryDropDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                     .add(layout.createSequentialGroup()
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                            .add(slugTextField)
-                                            .add(countryDropDown, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .add(18, 18, 18)
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(jTextField1)
-                                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                                .add(0, 126, Short.MAX_VALUE)
-                                                .add(checkButton))))))))
-                    .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(jLabel1)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(slugTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 157, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(18, 18, 18)
+                                .add(copyUrlButton))
                             .add(layout.createSequentialGroup()
-                                .add(0, 0, Short.MAX_VALUE)
-                                .add(createButton)))))
-                .add(19, 19, 19))
+                                .add(6, 6, 6)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jLabel3)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jLabel4)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(urlTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(14, 14, 14)
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(envDropDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel5)
-                    .add(jLabel4))
-                .add(3, 3, 3)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(slugTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jLabel1))
+                    .add(newFormatRadio)
+                    .add(slugTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel1)
+                    .add(copyUrlButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(oldFormatRadio)
                     .add(countryDropDown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel2)
-                    .add(checkButton))
-                .add(18, 18, 18)
-                .add(jLabel3)
+                    .add(jLabel2))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel4)
+                    .add(urlTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(13, 13, 13)
+                .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(createButton)
-                .add(20, 20, 20))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void groupButton() {
+        ButtonGroup bg1 = new ButtonGroup();
+        
+        bg1.add(newFormatRadio);
+        bg1.add(oldFormatRadio);
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void slugTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slugTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_slugTextFieldActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
         // TODO add your handling code here:
@@ -247,6 +284,231 @@ public class PiterFrame extends javax.swing.JFrame {
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         
     }//GEN-LAST:event_createButtonActionPerformed
+
+    private void oldFormatRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oldFormatRadioActionPerformed
+        String NewUrl;
+        NewUrl = urlTextField.getText();
+        if("https://quiz.visualdna.com/".equals(NewUrl)){
+            urlTextField.setText("https://<slug>.visualdna.com");
+        } else {
+            NewUrl = NewUrl.substring(27);
+            NewUrl = "https://"+NewUrl.concat(".visualdna.com/");
+            urlTextField.setText(NewUrl);
+        }
+    }//GEN-LAST:event_oldFormatRadioActionPerformed
+
+    private void slugTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slugTextFieldActionPerformed
+        
+    }//GEN-LAST:event_slugTextFieldActionPerformed
+
+    private void countryDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryDropDownActionPerformed
+        JComboBox cb = (JComboBox)evt.getSource();
+        String country = (String)cb.getSelectedItem();
+        String NewUrl = urlTextField.getText();
+        if ("<Select Country)>".equals(country)) {
+            country = "";
+        }
+        NewUrl = NewUrl.concat(country);
+        urlTextField.setText(NewUrl);
+        
+    }//GEN-LAST:event_countryDropDownActionPerformed
+
+    private void urlTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_urlTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_urlTextFieldActionPerformed
+
+    private void newFormatRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFormatRadioActionPerformed
+        String NewUrl;
+        NewUrl = urlTextField.getText();
+        if(NewUrl.contains("?")){
+            NewUrl = NewUrl.substring(8, 19);
+        } else {
+            NewUrl = NewUrl.substring(8, 14);
+        }
+        NewUrl = "https://quiz.visualdna.com/" + NewUrl;
+        urlTextField.setText(NewUrl);
+    }//GEN-LAST:event_newFormatRadioActionPerformed
+
+    private void slugTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_slugTextFieldKeyTyped
+        String NewUrl;
+        
+        if (newFormatRadio.isSelected()) {
+            NewUrl = urlTextField.getText() + slugTextField.getText();
+            
+        } else {
+            NewUrl = urlTextField.getText();
+            
+            if(NewUrl.contains("?")){
+                    NewUrl = NewUrl.substring(8, 19);
+            
+            } else {
+                    NewUrl = NewUrl.substring(8, 14);
+            
+            }
+            NewUrl = "https://" + NewUrl + ".visualdna.com/";
+        
+        }
+        urlTextField.setText(NewUrl);
+    }//GEN-LAST:event_slugTextFieldKeyTyped
+
+    private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
+        String url  = urlTextField.getText();
+        String country = "Default";
+        if ("us".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "UnitedStates";
+        } else if ("uk".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "UnitedKingdom";
+        } else if ("mx".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "Mexico";
+        } else if ("it".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "Italy";
+        } else if ("my".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "Malaysia";
+        } else if ("de".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "Germany";
+        } else if ("es".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "Spain";
+        } else if ("pl".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "Poland";
+        } else if ("ru".equals(url.substring(url.lastIndexOf('=')))) {
+            country = "Russia";
+        } 
+        
+        String testPage;
+        String slug = slugTextField.getText();
+        String quizTest = Character.toUpperCase(slug.charAt(0)) + slug.substring(1) + country + "QuizTest";
+        testPage = "package com.visualdna.test.quiz."+slugTextField.getText()+";\n" +
+"\n" +
+"import org.openqa.selenium.WebDriver;\n" +
+"import org.testng.annotations.Test;\n" +
+"\n" +
+"import com.visualdna.test.BaseLoggingTest;\n" +
+"\n" +
+"public class "+quizTest+" extends BaseLoggingTest {\n" +
+"\n" +
+"	public void openStartUrl(WebDriver driver) {\n" +
+"		driver.get("+ url +");\n" +
+"	}";
+        
+        String objectPage;
+        String quizPageObj;
+        quizPageObj = Character.toUpperCase(slug.charAt(0)) + slug.substring(1) + country + "QuizPage";
+        objectPage = "package com.visualdna.framework.pages.quiz.otpbank;\n" +
+"\n" +
+"import org.openqa.selenium.WebDriver;\n" +
+"import org.openqa.selenium.WebElement;\n" +
+"import org.openqa.selenium.support.FindBy;\n" +
+"import com.visualdna.framework.pages.quiz.AbstractPage;\n" +
+"\n" +
+"public class " + quizPageObj + " extends AbstractPage {\n" +
+"	public " + quizPageObj + "(WebDriver driver) {\n" +
+"		super(driver);\n" +
+"	}\n" +
+"\n" +
+"	private String getLink(WebElement element) {\n" +
+"		try {\n" +
+"			return element.getAttribute(\"href\");\n" +
+"		} catch (Exception e) {\n" +
+"			return \"\";\n" +
+"		}\n" +
+"	}";
+        
+        
+        if (takeQuizCheck.isSelected()) {
+            testPage = testPage + "	@Test\n" +
+"	public void testFeedback() {\n" +
+"		String feedbackMessage = new "+quizTest+"(driver()).takeQuiz().getFeedbackTitle();\n" +
+"		assertTrue(\"Couldn't get to feedback\", !feedbackMessage.isEmpty());\n" +
+"	}";
+            
+            
+            objectPage = objectPage + "	@FindBy(css = \".q-title-wrapper\")\n" +
+"	private WebElement questionTitle;\n" +
+"\n" +
+"	@FindBy(xpath = \"//div[@id='options']/ul/li[1]\")\n" +
+"	private WebElement optionButton;\n" +
+"\n" +
+"	@FindBy(xpath = \"//div[@id='options']/ul/li[2]\")\n" +
+"	private WebElement optionButton2;\n" +
+"	\n" +
+"	@FindBy(xpath = \"//div[@id='options']/ul/li[3]\")\n" +
+"	private WebElement optionButton3;\n" +
+"\n" +
+"	@FindBy(css = \"#submit-answer-bottom\")\n" +
+"	private WebElement continueButton;\n" +
+"\n" +
+"	@FindBy(css = \"	.question-instructions.pick\")\n" +
+"	private WebElement pickText;\n" + 
+"	@FindBy(xpath = \"//h2\")\n" +
+"	private WebElement feedbackTitle;\n" +
+"	\n" +
+"	\n" +
+"	public String getFeedbackTitle() {\n" +
+"		return feedbackTitle.getText();\n" +
+"	}\n" +
+"\n" +
+"	@Override\n" +
+"	public boolean isPageLoaded() {\n" +
+"		return isElementDisplayed(feedbackTitle);\n" +
+"	}\n" +
+"public "+quizPageObj+" takeQuiz() {\n" +
+"\n" +
+"		while (isElementDisplayed(optionButton)) {\n" +
+"\n" +
+"			if (isElementDisplayed(continueButton)) {\n" +
+"				optionButton.click();\n" +
+"				try {\n" +
+"					continueButton.click();\n" +
+"				} finally {\n" +
+"					clickOption();\n" +
+"				}\n" +
+"			} else {\n" +
+"					\n" +
+"				if (pickText.getText().contains(\"3\")) {\n" +
+"					optionButton2.click();\n" +
+"					optionButton3.click();\n" +
+"					clickOption();\n" +
+"				}\n" +
+"				else {\n" +
+"					clickOption();\n" +
+"				}\n" +
+"			}\n" +
+"		}\n" +
+"		return new "+quizPageObj+"(driver);\n" +
+"	}";
+        }
+
+        try {
+            File file = new File("/Users/jvolpintesta/Documents/workspace/"
+                    + "qa-automation/src/main/java/com/visualdna/test/quiz/" + quizTest + ".java");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(testPage);
+			bw.close();
+
+        } catch (IOException e) {
+        }
+
+        try {
+            File file = new File("/Users/jvolpintesta/Documents/workspace/"
+                    + "qa-automation/src/main/java/com/visualdna/test/quiz/" + quizPageObj + ".java");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(objectPage);
+			bw.close();
+
+        } catch (IOException e) {
+        }
+        
+
+        
+    }//GEN-LAST:event_createButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -283,13 +545,11 @@ public class PiterFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton checkButton;
+    private javax.swing.JButton copyUrlButton;
     private javax.swing.JComboBox countryDropDown;
     private javax.swing.JButton createButton;
-    private javax.swing.JComboBox envDropDown;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
@@ -301,9 +561,11 @@ public class PiterFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JRadioButton newFormatRadio;
+    private javax.swing.JRadioButton oldFormatRadio;
     private javax.swing.JTextField slugTextField;
+    private javax.swing.JCheckBox takeQuizCheck;
+    private javax.swing.JTextField urlTextField;
     // End of variables declaration//GEN-END:variables
 }
